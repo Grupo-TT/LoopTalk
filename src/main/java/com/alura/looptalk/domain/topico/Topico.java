@@ -81,5 +81,9 @@ public class Topico {
         }
     }
 
+    public void actualizarEstado(StatusTopico nuevoEstado) {
+        this.status = nuevoEstado;
+    }
+
 
 }

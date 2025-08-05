@@ -1,5 +1,9 @@
 package com.alura.looptalk.controller;
 
+import com.alura.looptalk.domain.respuesta.dto.DetalleRespuesta;
+import com.alura.looptalk.domain.respuesta.dto.RegistroRespuesta;
+import com.alura.looptalk.domain.respuesta.repository.RespuestaRepository;
+import com.alura.looptalk.domain.respuesta.service.RespuestaService;
 import com.alura.looptalk.domain.topico.dto.ActualizarTopico;
 import com.alura.looptalk.domain.topico.dto.RegistroTopico;
 import com.alura.looptalk.domain.topico.dto.DetalleTopico;
@@ -34,11 +38,15 @@ public class TopicoController {
     @Autowired
     private TopicoService topicoService;
 
+    @Autowired
+    private RespuestaRepository respuestaRepository;
 
+    @Autowired
+    private RespuestaService respuestaService;
 
 
     @GetMapping
-    public ResponseEntity<Page<DetalleTopico>> listadoMedicos(@PageableDefault(size = 10, sort = "fechaCreacion", direction = Sort.Direction.ASC) Pageable paginacion) {
+    public ResponseEntity<Page<DetalleTopico>> listadoTopicos(@PageableDefault(size = 10, sort = "fechaCreacion", direction = Sort.Direction.ASC) Pageable paginacion) {
         return ResponseEntity.ok(topicoRepository.findAll(paginacion).map(DetalleTopico::new));
     }
 
@@ -66,5 +74,27 @@ public class TopicoController {
         topicoService.remover(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}/respuestas")
+    public ResponseEntity<Page<DetalleRespuesta>> obtenerRespuestas(@PathVariable Long id, @PageableDefault(size = 10, sort = "fechaCreacion", direction = Sort.Direction.ASC) Pageable paginacion) {
+        if (!topicoRepository.existsById(id)) {
+            throw new EntityNotFoundException("Tópico no encontrado");
+        }
+        var respuestas = respuestaRepository.findByTopicoId(id, paginacion).map(DetalleRespuesta::new);
+
+        if (respuestas.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 204 No Content
+        }
+
+        return ResponseEntity.ok(respuestas);
+    }
+
+    @PostMapping("/{id}/respuestas")
+    @Transactional
+    public ResponseEntity<DetalleRespuesta> registrarRespuestaEnTopico(@PathVariable Long id, @RequestBody @Valid RegistroRespuesta datos) {
+        var respuesta = respuestaService.registrar(datos, id);
+        return ResponseEntity.ok(respuesta);
+    }
+
 
 }
