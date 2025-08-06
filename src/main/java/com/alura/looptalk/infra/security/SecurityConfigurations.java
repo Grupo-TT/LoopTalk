@@ -1,5 +1,7 @@
 package com.alura.looptalk.infra.security;
 
+import com.alura.looptalk.infra.exceptions.CustomAccessDeniedHandler;
+import com.alura.looptalk.infra.exceptions.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +22,13 @@ public class SecurityConfigurations {
 
     @Autowired
     private SecurityFilter securityFilter;
+
+    @Autowired
+    private CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -50,6 +59,11 @@ public class SecurityConfigurations {
                                 // Todo lo demás requiere autenticación
                                 .anyRequest().authenticated()
                 )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                )
+
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
