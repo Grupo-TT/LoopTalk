@@ -4,6 +4,7 @@ import com.alura.looptalk.domain.respuesta.dto.ActualizarRespuesta;
 import com.alura.looptalk.domain.respuesta.dto.DetalleRespuesta;
 import com.alura.looptalk.domain.respuesta.repository.RespuestaRepository;
 import com.alura.looptalk.domain.respuesta.service.RespuestaService;
+import com.alura.looptalk.domain.usuario.Usuario;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,30 +39,24 @@ public class RespuestasController {
         return ResponseEntity.ok(new DetalleRespuesta(respuestaRepository.getReferenceById(id)));
     }
 
-//    @PostMapping
-//    public ResponseEntity<DetalleRespuesta> registrarRespuesta(@RequestBody @Valid RegistroRespuesta datos) {
-//        DetalleRespuesta detalleRespuesta = respuestaService.registrar(datos);
-//        return ResponseEntity.ok(detalleRespuesta);
-//    }
-
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DetalleRespuesta> actualizarRespuesta(@PathVariable Long id, @RequestBody @Valid ActualizarRespuesta datos){
-        var detalle = respuestaService.actualizar(id, datos);
+    public ResponseEntity<DetalleRespuesta> actualizarRespuesta(@PathVariable Long id, @RequestBody @Valid ActualizarRespuesta datos, @AuthenticationPrincipal Usuario autor){
+        var detalle = respuestaService.actualizar(id, datos, autor);
         return ResponseEntity.ok(detalle);
     }
 
     @PutMapping("/{id}/solucionar")
     @Transactional
-    public ResponseEntity marcarComoSolucion(@PathVariable Long id) {
-        respuestaService.marcarSolucion(id);
+    public ResponseEntity marcarComoSolucion(@PathVariable Long id, @AuthenticationPrincipal Usuario autor) {
+        respuestaService.marcarSolucion(id, autor);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity eliminarRespuesta(@PathVariable Long id) {
-        respuestaService.remover(id);
+    public ResponseEntity eliminarRespuesta(@PathVariable Long id, @AuthenticationPrincipal Usuario autor) {
+        respuestaService.remover(id, autor);
         return ResponseEntity.noContent().build();
     }
 

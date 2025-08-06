@@ -9,6 +9,7 @@ import com.alura.looptalk.domain.topico.dto.RegistroTopico;
 import com.alura.looptalk.domain.topico.dto.DetalleTopico;
 import com.alura.looptalk.domain.topico.service.TopicoService;
 import com.alura.looptalk.domain.topico.repository.TopicoRepository;
+import com.alura.looptalk.domain.usuario.Usuario;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,22 +53,22 @@ public class TopicoController {
     }
 
     @PostMapping
-    public ResponseEntity<DetalleTopico> registrarTopico(@RequestBody @Valid RegistroTopico datos) {
-        DetalleTopico detalleTopico = topicoService.registrar(datos);
+    public ResponseEntity<DetalleTopico> registrarTopico(@RequestBody @Valid RegistroTopico datos, @AuthenticationPrincipal Usuario autor) {
+        DetalleTopico detalleTopico = topicoService.registrar(datos, autor);
         return ResponseEntity.ok(detalleTopico);
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DetalleTopico> actualizarTopico(@PathVariable Long id, @RequestBody @Valid ActualizarTopico datos){
-        var detalle = topicoService.actualizar(id, datos);
+    public ResponseEntity<DetalleTopico> actualizarTopico(@PathVariable Long id, @RequestBody @Valid ActualizarTopico datos, @AuthenticationPrincipal Usuario autor){
+        var detalle = topicoService.actualizar(id, datos, autor);
         return ResponseEntity.ok(detalle);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity eliminarTopico(@PathVariable Long id) {
-        topicoService.remover(id);
+    public ResponseEntity eliminarTopico(@PathVariable Long id, @AuthenticationPrincipal Usuario autor) {
+        topicoService.remover(id, autor);
         return ResponseEntity.noContent().build();
     }
 
@@ -79,14 +82,13 @@ public class TopicoController {
         if (respuestas.isEmpty()) {
             return ResponseEntity.noContent().build(); // 204 No Content
         }
-
         return ResponseEntity.ok(respuestas);
     }
 
     @PostMapping("/{id}/respuestas")
     @Transactional
-    public ResponseEntity<DetalleRespuesta> registrarRespuestaEnTopico(@PathVariable Long id, @RequestBody @Valid RegistroRespuesta datos) {
-        var respuesta = respuestaService.registrar(datos, id);
+    public ResponseEntity<DetalleRespuesta> registrarRespuestaEnTopico(@PathVariable Long id, @RequestBody @Valid RegistroRespuesta datos, @AuthenticationPrincipal Usuario autor) {
+        var respuesta = respuestaService.registrar(datos, id, autor);
         return ResponseEntity.ok(respuesta);
     }
 

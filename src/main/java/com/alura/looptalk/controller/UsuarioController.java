@@ -1,5 +1,6 @@
 package com.alura.looptalk.controller;
 
+import com.alura.looptalk.domain.usuario.Usuario;
 import com.alura.looptalk.domain.usuario.dto.ActualizarUsuario;
 import com.alura.looptalk.domain.usuario.dto.DetalleUsuario;
 import com.alura.looptalk.domain.usuario.repository.UsuarioRepository;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,23 +38,17 @@ public class UsuarioController {
         return ResponseEntity.ok(new DetalleUsuario(usuarioRepository.getReferenceById(id)));
     }
 
-//    @PostMapping("registro")
-//    public ResponseEntity<DetalleUsuario> registrarUsuario(@RequestBody @Valid RegistroUsuario datos) {
-//        DetalleUsuario detalleUsuario = usuarioService.registrar(datos);
-//        return ResponseEntity.ok(detalleUsuario);
-//    }
-
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<DetalleUsuario> actualizarUsuario(@PathVariable Long id, @RequestBody @Valid ActualizarUsuario datos){
-        var detalle = usuarioService.actualizar(id, datos);
+    public ResponseEntity<DetalleUsuario> actualizarUsuario(@PathVariable Long id, @RequestBody @Valid ActualizarUsuario datos, @AuthenticationPrincipal Usuario autor){
+        var detalle = usuarioService.actualizar(id, datos, autor);
         return ResponseEntity.ok(detalle);
     }
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity eliminarUsuario(@PathVariable Long id) {
-        usuarioService.remover(id);
+    public ResponseEntity eliminarUsuario(@PathVariable Long id, @AuthenticationPrincipal Usuario autor) {
+        usuarioService.remover(id, autor);
         return ResponseEntity.noContent().build();
     }
 

@@ -31,18 +31,29 @@ public class UsuarioService {
         return new DetalleUsuario(usuario);
     }
 
-    public DetalleUsuario actualizar(Long id, ActualizarUsuario datos) {
+    public DetalleUsuario actualizar(Long id, ActualizarUsuario datos, Usuario actual) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+
+        if (!usuario.getId().equals(actual.getId())) {
+            throw new SecurityException("No tienes permiso para actualizar este usuario.");
+        }
 
         usuario.actualizarDatos(datos);
         return new DetalleUsuario(usuario);
     }
 
-    public void remover(Long id) {
-        if (!usuarioRepository.existsById(id)) {
-            throw new EntityNotFoundException("Usuario no encontrado");
+    public void remover(Long id, Usuario actual) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+
+        boolean esAutor = usuario.getId().equals(actual.getId());
+        boolean esProfesorOModerador = actual.getRol().name().equals("PROFESOR") || actual.getRol().name().equals("MODERADOR");
+
+        if (!esAutor && !esProfesorOModerador) {
+            throw new SecurityException("No tienes permiso para eliminar este usuario.");
         }
+
         usuarioRepository.deleteById(id);
     }
 
