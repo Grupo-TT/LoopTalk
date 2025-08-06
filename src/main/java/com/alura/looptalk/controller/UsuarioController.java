@@ -1,11 +1,7 @@
 package com.alura.looptalk.controller;
 
-import com.alura.looptalk.domain.topico.dto.ActualizarTopico;
-import com.alura.looptalk.domain.topico.dto.DetalleTopico;
-import com.alura.looptalk.domain.topico.dto.RegistroTopico;
 import com.alura.looptalk.domain.usuario.dto.ActualizarUsuario;
 import com.alura.looptalk.domain.usuario.dto.DetalleUsuario;
-import com.alura.looptalk.domain.usuario.dto.RegistroUsuario;
 import com.alura.looptalk.domain.usuario.repository.UsuarioRepository;
 import com.alura.looptalk.domain.usuario.service.UsuarioService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;

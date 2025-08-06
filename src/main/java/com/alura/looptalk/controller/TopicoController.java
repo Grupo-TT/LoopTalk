@@ -7,13 +7,8 @@ import com.alura.looptalk.domain.respuesta.service.RespuestaService;
 import com.alura.looptalk.domain.topico.dto.ActualizarTopico;
 import com.alura.looptalk.domain.topico.dto.RegistroTopico;
 import com.alura.looptalk.domain.topico.dto.DetalleTopico;
-import com.alura.looptalk.domain.curso.Curso;
-import com.alura.looptalk.domain.topico.Topico;
 import com.alura.looptalk.domain.topico.service.TopicoService;
-import com.alura.looptalk.domain.usuario.Usuario;
-import com.alura.looptalk.domain.curso.repository.CursoRepository;
 import com.alura.looptalk.domain.topico.repository.TopicoRepository;
-import com.alura.looptalk.domain.usuario.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -23,10 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("topico")

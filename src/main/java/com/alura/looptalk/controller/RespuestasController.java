@@ -2,12 +2,8 @@ package com.alura.looptalk.controller;
 
 import com.alura.looptalk.domain.respuesta.dto.ActualizarRespuesta;
 import com.alura.looptalk.domain.respuesta.dto.DetalleRespuesta;
-import com.alura.looptalk.domain.respuesta.dto.RegistroRespuesta;
 import com.alura.looptalk.domain.respuesta.repository.RespuestaRepository;
 import com.alura.looptalk.domain.respuesta.service.RespuestaService;
-import com.alura.looptalk.domain.topico.dto.ActualizarTopico;
-import com.alura.looptalk.domain.topico.dto.DetalleTopico;
-import com.alura.looptalk.domain.topico.dto.RegistroTopico;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
