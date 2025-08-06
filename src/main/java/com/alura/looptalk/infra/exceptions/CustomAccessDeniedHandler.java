@@ -22,7 +22,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         response.setContentType("application/json");
 
         PrintWriter writer = response.getWriter();
-        writer.write("{\"error\": \"Acceso denegado. No tienes permisos para realizar esta acción.\"}");
+        writer.write("{\"error\": \"Acceso denegado. No tienes permisos para realizar esta accion.\"}");
         writer.flush();
         writer.close();
     }

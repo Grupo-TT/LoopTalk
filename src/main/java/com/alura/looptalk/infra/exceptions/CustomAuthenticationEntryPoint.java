@@ -18,6 +18,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
             throws IOException {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json");
-        response.getWriter().write("{\"error\": \"No estás autenticado. Por favor, inicia sesión.\"}");
+        response.getWriter().write("{\"error\": \"No estas autenticado. Por favor, inicia sesion.\"}");
     }
 }
