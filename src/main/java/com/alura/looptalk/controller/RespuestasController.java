@@ -8,6 +8,7 @@ import com.alura.looptalk.domain.respuesta.service.RespuestaService;
 import com.alura.looptalk.domain.topico.dto.ActualizarTopico;
 import com.alura.looptalk.domain.topico.dto.DetalleTopico;
 import com.alura.looptalk.domain.topico.dto.RegistroTopico;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("respuestas")
-//@SecurityRequirement(name = "bearer-key")
+@SecurityRequirement(name = "bearer-key")
 public class RespuestasController {
 
     @Autowired

@@ -5,6 +5,7 @@ import com.alura.looptalk.domain.curso.dto.DetalleCurso;
 import com.alura.looptalk.domain.curso.dto.RegistroCurso;
 import com.alura.looptalk.domain.curso.repository.CursoRepository;
 import com.alura.looptalk.domain.curso.service.CursoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("curso")
-//@SecurityRequirement(name = "bearer-key")
+@SecurityRequirement(name = "bearer-key")
 public class CursoController {
 
     @Autowired

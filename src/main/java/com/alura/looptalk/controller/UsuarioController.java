@@ -8,6 +8,7 @@ import com.alura.looptalk.domain.usuario.dto.DetalleUsuario;
 import com.alura.looptalk.domain.usuario.dto.RegistroUsuario;
 import com.alura.looptalk.domain.usuario.repository.UsuarioRepository;
 import com.alura.looptalk.domain.usuario.service.UsuarioService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("usuario")
-//@SecurityRequirement(name = "bearer-key")
+@SecurityRequirement(name = "bearer-key")
 public class UsuarioController {
 
     @Autowired
@@ -39,11 +40,11 @@ public class UsuarioController {
         return ResponseEntity.ok(new DetalleUsuario(usuarioRepository.getReferenceById(id)));
     }
 
-    @PostMapping
-    public ResponseEntity<DetalleUsuario> registrarUsuario(@RequestBody @Valid RegistroUsuario datos) {
-        DetalleUsuario detalleUsuario = usuarioService.registrar(datos);
-        return ResponseEntity.ok(detalleUsuario);
-    }
+//    @PostMapping("registro")
+//    public ResponseEntity<DetalleUsuario> registrarUsuario(@RequestBody @Valid RegistroUsuario datos) {
+//        DetalleUsuario detalleUsuario = usuarioService.registrar(datos);
+//        return ResponseEntity.ok(detalleUsuario);
+//    }
 
     @PutMapping("/{id}")
     @Transactional

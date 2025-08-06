@@ -4,6 +4,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,15 +35,15 @@ public class GestionarErrores {
         return ResponseEntity.badRequest().body(ex.getMessage());
     }
 
-//    @ExceptionHandler(BadCredentialsException.class)
-//    public ResponseEntity gestionarErrorBadCredentials() {
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
-//    }
-//
-//    @ExceptionHandler(AuthenticationException.class)
-//    public ResponseEntity gestionarErrorAuthentication() {
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falla en la autenticación");
-//    }
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity gestionarErrorBadCredentials() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas");
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity gestionarErrorAuthentication() {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Falla en la autenticación");
+    }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity gestionarErrorAccesoDenegado() {

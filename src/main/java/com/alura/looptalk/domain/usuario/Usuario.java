@@ -1,23 +1,24 @@
 package com.alura.looptalk.domain.usuario;
 
-import com.alura.looptalk.domain.curso.Curso;
-import com.alura.looptalk.domain.topico.StatusTopico;
 import com.alura.looptalk.domain.usuario.dto.ActualizarUsuario;
-import com.alura.looptalk.domain.usuario.dto.DetalleUsuario;
 import com.alura.looptalk.domain.usuario.dto.RegistroUsuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Usuario {
+public class Usuario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +39,41 @@ public class Usuario {
         this.correoElectronico = usuario.correoElectronico();
         this.contrasenia = usuario.contrasenia();
         this.rol = usuario.rol();
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.rol.name()));
+    }
+
+    @Override
+    public String getPassword() {
+        return contrasenia;
+    }
+
+    @Override
+    public String getUsername() {
+        return correoElectronico;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     public void actualizarDatos(ActualizarUsuario usuario) {
