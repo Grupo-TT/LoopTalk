@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  looptalk-api:
+    image: ghcr.io/${GITHUB_REPOSITORY_OWNER}/looptalk-api:latest
+    container_name: looptalk-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      - HOST_DB=${DB_HOST_LOOPTALK}
+      - NAME_DB=${DB_NAME_LOOPTALK}
+      - USER_DB=${USER_DB_LOOPTALK}
+      - PASSWORD_DB=${PASSWORD_DB_LOOPTALK}
+      - JWT_SECRET=${JWT_SECRET_LOOPTALK}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
