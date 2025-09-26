@@ -1,17 +1,23 @@
 package com.alura.looptalk.domain.usuario;
 
+import com.alura.looptalk.domain.respuesta.Respuesta;
+import com.alura.looptalk.domain.topico.Topico;
 import com.alura.looptalk.domain.usuario.dto.ActualizarUsuario;
 import com.alura.looptalk.domain.usuario.dto.RegistroUsuario;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "usuarios")
+@Table(name = "usuarios", indexes = {
+    @Index(name = "idx_usuario_correo", columnList = "correo_electronico", unique = true)
+})
 @Entity(name = "Usuario")
 @Getter
 @Setter
@@ -24,21 +30,34 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
+    @Column(name = "correo_electronico", nullable = false, unique = true, length = 150)
     private String correoElectronico;
 
+    @Column(name = "contrasenia", nullable = false)
     private String contrasenia;
 
-    @Column(name = "rol_usuario")
+    @Column(name = "rol_usuario", nullable = false)
     @Enumerated(EnumType.STRING)
     private Roles rol;
+
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Topico> topicos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Respuesta> respuestas = new ArrayList<>();
 
     public Usuario(RegistroUsuario usuario) {
         this.nombre = usuario.nombre();
         this.correoElectronico = usuario.correoElectronico();
         this.contrasenia = usuario.contrasenia();
         this.rol = usuario.rol();
+        this.topicos = new ArrayList<>();
+        this.respuestas = new ArrayList<>();
     }
 
     @Override
