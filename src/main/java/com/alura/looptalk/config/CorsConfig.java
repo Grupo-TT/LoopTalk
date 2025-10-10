@@ -10,7 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")  // Cambiado de "/api/**" a "/**" para cubrir todas las rutas
-                .allowedOrigins(
+                .allowedOriginPatterns(
                         // Desarrollo local Next.js
                         "http://localhost:3000",
                         "http://localhost:3001",
@@ -24,7 +24,8 @@ public class CorsConfig implements WebMvcConfigurer {
                         "https://www.tu-dominio.com",
 
                         // Vercel (plataforma común para Next.js)
-                        "https://*.vercel.app"
+                        "https://*.vercel.app",
+                        "*"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD")
                 .allowedHeaders(
