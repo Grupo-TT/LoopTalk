@@ -24,6 +24,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("API LoopTalk")
                     .withSubject(usuario.getCorreoElectronico())
+                    .withClaim("id", usuario.getId())
                     .withClaim("rol", usuario.getRol().name())
                     .withExpiresAt(fechaExpiracion())
                     .sign(algoritmo);
