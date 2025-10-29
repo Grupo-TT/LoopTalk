@@ -10,6 +10,7 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -95,7 +96,9 @@ public class Usuario implements UserDetails {
         return true;
     }
 
-    public void actualizarDatos(ActualizarUsuario usuario) {
+
+
+    public void actualizarDatos(ActualizarUsuario usuario, PasswordEncoder passwordEncoder) {
         if (usuario.nombre() != null && !usuario.nombre().trim().isEmpty()) {
             this.nombre = usuario.nombre();
         }
@@ -105,7 +108,7 @@ public class Usuario implements UserDetails {
         }
 
         if (usuario.contrasenia() != null) {
-            this.contrasenia = usuario.contrasenia();
+            this.contrasenia = passwordEncoder.encode(usuario.contrasenia());
         }
 
         if (usuario.rol() != null) {

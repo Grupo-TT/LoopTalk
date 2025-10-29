@@ -20,7 +20,9 @@ public class UsuarioService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+
     public DetalleUsuario registrar(RegistroUsuario datos) {
+
         if (usuarioRepository.existsByCorreoElectronico(datos.correoElectronico())) {
             throw new ValidacionException("Ya existe un usuario registrado con ese correo electrónico.");
         }
@@ -39,7 +41,7 @@ public class UsuarioService {
             throw new SecurityException("No tienes permiso para actualizar este usuario.");
         }
 
-        usuario.actualizarDatos(datos);
+        usuario.actualizarDatos(datos,passwordEncoder);
         return new DetalleUsuario(usuario);
     }
 
