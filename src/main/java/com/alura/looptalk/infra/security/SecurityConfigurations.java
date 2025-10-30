@@ -54,7 +54,7 @@ public class SecurityConfigurations {
                                 .requestMatchers("/respuesta/**").hasAnyRole("PROFESOR", "ESTUDIANTE", "MODERADOR")
 
                                 // === Usuarios ===
-                                .requestMatchers(HttpMethod.GET, "/usuario", "/usuario/**").hasAnyRole("PROFESOR", "MODERADOR")
+                                .requestMatchers(HttpMethod.GET, "/usuario", "/usuario/**").hasAnyRole("ESTUDIANTE", "PROFESOR", "MODERADOR")
                                 .requestMatchers("/usuario/**").hasAnyRole("PROFESOR", "ESTUDIANTE", "MODERADOR")
 
                                 // Todo lo demás requiere autenticación
