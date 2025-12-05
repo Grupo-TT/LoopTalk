@@ -36,6 +36,9 @@ public class Topico {
     @Column(name = "mensaje", nullable = false, columnDefinition = "TEXT")
     private String mensaje;
 
+    @Column(name = "foto_url", nullable = false, columnDefinition = "TEXT")
+    private String fotoUrl;
+
     @Column(name = "fecha_creacion", nullable = false)
     private LocalDateTime fechaCreacion;
 
@@ -55,9 +58,10 @@ public class Topico {
     @JsonIgnore
     private List<Respuesta> respuestas = new ArrayList<>();
 
-    public Topico(String titulo, String mensaje, Usuario autor, Curso curso) {
+    public Topico(String titulo, String mensaje, String fotoUrl, Usuario autor, Curso curso) {
         this.titulo = titulo;
         this.mensaje = mensaje;
+        this.fotoUrl = fotoUrl;
         this.fechaCreacion = LocalDateTime.now();
         this.status = StatusTopico.NO_RESPONDIDO;
         this.autor = autor;
@@ -65,9 +69,10 @@ public class Topico {
         this.respuestas = new ArrayList<>();
     }
 
-    public Topico(String titulo, String mensaje, Usuario autor, StatusTopico status, Curso curso) {
+    public Topico(String titulo, String mensaje, String fotoUrl, Usuario autor, StatusTopico status, Curso curso) {
         this.titulo = titulo;
         this.mensaje = mensaje;
+        this.fotoUrl = fotoUrl;
         this.fechaCreacion = LocalDateTime.now();
         this.status = status;
         this.autor = autor;
@@ -75,13 +80,17 @@ public class Topico {
         this.respuestas = new ArrayList<>();
     }
 
-    public void actualizarDatos(String titulo, String mensaje, StatusTopico status, Curso curso) {
+    public void actualizarDatos(String titulo, String mensaje, String fotoUrl, StatusTopico status, Curso curso) {
         if (titulo != null && !titulo.trim().isEmpty()) {
             this.titulo = titulo;
         }
 
         if (mensaje != null && !mensaje.trim().isEmpty()) {
             this.mensaje = mensaje;
+        }
+
+        if (fotoUrl != null && !fotoUrl.trim().isEmpty()) {
+            this.fotoUrl = fotoUrl;
         }
 
         if (status != null) {

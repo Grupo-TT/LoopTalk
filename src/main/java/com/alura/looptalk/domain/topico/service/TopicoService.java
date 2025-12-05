@@ -33,7 +33,7 @@ public class TopicoService {
         validadores.forEach(v -> v.validar(datos));
         var curso = cursoRepository.getReferenceById(datos.idCurso());
 
-        var topico = new Topico(datos.titulo(), datos.mensaje(), autor, curso);
+        var topico = new Topico(datos.titulo(), datos.mensaje(), datos.fotoUrl(), autor, curso);
         topicoRepository.save(topico);
 
         return new DetalleTopico(topico);
@@ -52,7 +52,7 @@ public class TopicoService {
                     .orElseThrow(() -> new EntityNotFoundException("Curso no encontrado"));
         }
 
-        topico.actualizarDatos(datos.titulo(), datos.mensaje(), datos.estado(), curso);
+        topico.actualizarDatos(datos.titulo(), datos.mensaje(), datos.fotoUrl(), datos.estado(), curso);
         return new DetalleTopico(topico);
     }
 

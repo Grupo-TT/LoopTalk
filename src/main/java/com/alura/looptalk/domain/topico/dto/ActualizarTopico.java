@@ -9,6 +9,7 @@ public record ActualizarTopico(
         Long id,
         String titulo,
         String mensaje,
+        String fotoUrl,
         StatusTopico estado,
         Long idCurso) {
 }

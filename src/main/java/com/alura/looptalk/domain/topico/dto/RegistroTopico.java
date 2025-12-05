@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 public record RegistroTopico(
         @NotBlank String titulo,
         @NotBlank String mensaje,
+        String fotoUrl,
         @NotNull Long idCurso
         ) {
 }
